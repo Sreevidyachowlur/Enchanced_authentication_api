@@ -1,0 +1,455 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "interview-task",
+    "description": "This is API page ",
+    "version": "1.0.11"
+    
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1/users"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "ABC"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "abc@gmail.com"
+                  },
+                  "phone": {
+                    "type": "integer",
+                    "example": 1223119822
+                  },
+                  "profilePic": {
+                    "type": "string",
+                    "format": "url",
+                    "example": "https://example.com/profile5.jpg"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "abc123xyz"
+                  },
+                  "bio": {
+                    "type": "string",
+                    "example": "jsxbhjsbhjbd"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["USER", "ADMIN"],
+                    "example": "USER"
+                  },
+                  "profileType": {
+                    "type": "string",
+                    "enum": ["PUBLIC", "PRIVATE"],
+                    "example": "PRIVATE"
+                  }
+                },
+                "required": ["name", "email", "phone", "password", "role", "profileType"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User registered successfully."
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "66153763bccc347154d91bd9"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ABC"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "USER"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "login to User account",
+        "description": "login to User account",
+        "operationId": "userlogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                  "properties": {
+                    "email":{
+                      "type":"string",
+                      "example":"john@email.com"
+                    },
+                    "password":{
+                      "type":"string",
+                      "example":"12345"
+                    }
+          
+                  }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+          "statusCode": {
+            "type": "integer",
+            "example": 201
+          },
+          "message": {
+            "type": "string",
+            "example": "User loggedin successfully."
+          },
+          "data": {
+            "type": "object",
+            "properties":{
+              "token":{
+                "type":"string",
+                "example":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGhlVXNlciIsInJvbGUiOiJVU0VSIiwiZW1haWwiOiJqb2huQGVtYWlsLmNvbSIsImlhdCI6MTcxMjY1NjU2M30.9z2WDW3eCbGAv56zrE_pNHZWu-SXWWgzd1HsLkruAgs"
+              }
+            }
+           
+          }
+          
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "422": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+
+    "/uploadImage": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+         "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+         "responses": {
+          "200": {
+            "description": "Image uploaded successfully"
+          }}
+      }
+    },
+    "/viewProfile/{userId}": {
+     "get": {
+      "tags": [
+          "user"
+        ],
+        "summary": "View user profile by ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user to view profile",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66153763bccc347154d91bd9"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User profile retrieved successfully."
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "66153763bccc347154d91bd9"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ABC"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "abc@gmail.com"
+                        },
+                        "phone": {
+                          "type": "integer",
+                          "example": 1223119822
+                        },
+                        "profilePic": {
+                          "type": "string",
+                          "format": "url",
+                          "example": "https://example.com/profile5.jpg"
+                        },
+                        "bio": {
+                          "type": "string",
+                          "example": "abcdef"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-04-09T12:40:18.581Z"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "USER"
+                        },
+                        "profileType": {
+                          "type": "string",
+                          "example": "PUBLIC"
+                        },
+                        "__v": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+     "/switchProfileType/{status}": {
+      "patch": {
+         "tags": [
+          "user"
+        ],
+        "summary": "Switch user profile type",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Status of the profile type (active or inactive)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["active", "inactive"]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "statusCode": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "Success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Success"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "changed your profile as PRIVATE account"
+                      },
+                      "result": {
+                        "type": "object",
+                        "properties": {
+                          "acknowledged": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "modifiedCount": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "upsertedId": {
+                            "type": "null",
+                            "example": null
+                          },
+                          "upsertedCount": {
+                            "type": "integer",
+                            "example": 0
+                          },
+                          "matchedCount": {
+                            "type": "integer",
+                            "example": 1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile type switched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Switched your profile"
+                        },
+                        "result": {
+                          "type": "object",
+                          "properties": {
+                            "acknowledged": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "modifiedCount": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "upsertedId": {
+                              "type": "null",
+                              "example": null
+                            },
+                            "upsertedCount": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "matchedCount": {
+                              "type": "integer",
+                              "example": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
